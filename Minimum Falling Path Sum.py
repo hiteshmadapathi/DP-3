@@ -1,22 +1,25 @@
 # Time Complexity --> O(n*n) where n*n are the dimensions of matrix
-# Space Complexity --> O(n*n)
+# Space Complexity --> O(n)
 class Solution:
     def minFallingPathSum(self, matrix: List[List[int]]) -> int:
         n = len(matrix)
         if n==1:
             return matrix[0][0]
 
-        dp = [[0]*(n) for i in range(n+1)]
-        for i in range(1,n+1):
+        dp = [0 for i in range(n)]
+        for i in range(n):
+            left = 0
             for j in range(n):
+                temp = dp[j]
                 if j==0:
-                    dp[i][j] = matrix[i-1][j] + min(dp[i-1][j], dp[i-1][j+1])
+                    dp[j] = matrix[i][j] + min(dp[j], dp[j+1])
                 elif j==n-1:
-                    dp[i][j] = matrix[i-1][j] + min(dp[i-1][j-1], dp[i-1][j])
+                    dp[j] = matrix[i][j] + min(left, dp[j])
                 else:
-                    dp[i][j] = matrix[i-1][j] + min(dp[i-1][j-1], dp[i-1][j], dp[i-1][j+1])
+                    dp[j] = matrix[i][j] + min(left, dp[j], dp[j+1])
+                left = temp
 
-        return min(dp[-1][:])
+        return min(dp)
 
 
 
